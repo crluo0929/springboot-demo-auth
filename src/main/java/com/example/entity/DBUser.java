@@ -27,9 +27,9 @@ public class DBUser {
 	private String mail ; //email
 	private String tel ;  //telnum
 	private String pass; //密碼
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "userid",referencedColumnName = "id",insertable = true, updatable = true)
-	private List<Role> roles ;
+	private List<Role> roles = new ArrayList<>();
 	
 	public int getId() {
 		return id;
