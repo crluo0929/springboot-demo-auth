@@ -11,12 +11,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 
 import com.example.service.H2UserDetailsService;
+import com.example.service.ThirdPartyAuthenticationProvider;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired H2UserDetailsService userDetailsService;
+	@Autowired ThirdPartyAuthenticationProvider authProvider;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -39,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService);
+//		auth.userDetailsService(userDetailsService);
+		auth.authenticationProvider(authProvider) ;
 	}
 	
 	@Override
