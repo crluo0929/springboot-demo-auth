@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.entity.DBUser;
 import com.example.entity.Role;
@@ -26,6 +28,7 @@ public class UserService {
 		return userDao.findByName(name).orElse(null);
 	}
 	
+	@Transactional
 	public DBUser addUser(DBUser user) {
 		List<Role> tempRoles = user.getRoles()==null ? new ArrayList<>() : user.getRoles() ;
 		user.setRoles(null);
@@ -37,6 +40,7 @@ public class UserService {
 		return resultUser ;
 	}
 	
+	@Transactional
 	public void deleteUserById(int id) {
 		userDao.deleteById(id);
 	}

@@ -6,6 +6,7 @@ import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.entity.Book;
 import com.example.repo.BookRepository;
@@ -20,6 +21,7 @@ public class BookService {
 		return toList(bookDao.findAll()) ;
 	}
 	
+	@Transactional
 	public Book addBook(Book book) {
 		Book b = bookDao.save(book);
 		return b ;
