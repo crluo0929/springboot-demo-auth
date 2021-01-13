@@ -1,8 +1,10 @@
 package com.example.cfg;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -30,7 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		  .authorizeRequests()
 		  .antMatchers("/api/book/**").authenticated()
 		  .antMatchers("/api/user/**").hasRole("ADMIN")
-		  .anyRequest().permitAll()
+		  .antMatchers("/api/auth/**").permitAll()
+		  .anyRequest().authenticated()
 		  .and()
 		  //改為JWT認證，不需要表單登入認證
 //		  .formLogin().permitAll().and()
@@ -48,6 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/h2-console/**").and().debug(true) ;
+	}
+	
+	@Bean
+	public AuthenticationManager authenticationManager() throws Exception {
+		return super.authenticationManager() ;
 	}
 	
 }

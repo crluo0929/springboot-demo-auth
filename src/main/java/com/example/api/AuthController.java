@@ -10,25 +10,32 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.service.JwtService;
+
 @RestController
 public class AuthController {
 
 	@Autowired AuthenticationManager authManager ;
+	@Autowired JwtService jwtService ;
 	
 	@PostMapping("/api/auth")
 	public String auth(@RequestBody NamePass userInfo) {
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userInfo.username, userInfo.password) ;
-		//1.進行認證
 		try {
+			//1.進行認證
 			Authentication authToken = authManager.authenticate(authentication) ;
 			//2.認證成功存入SecurityContext
 			SecurityContextHolder.getContext().setAuthentication(authToken);
+			//3.產生JWT回傳
+			return jwtService.generateToken(authToken) ;
 		}catch(Exception e) {
 			throw new UsernameNotFoundException("認證失敗") ;
 		}
-		//3.產生JWT回傳
-		
-		return "" ;
+	}
+	
+	@PostMapping("/api/auth/validate")
+	public boolean validateToken(@RequestBody String token) {
+		return jwtService.validateToken(token) ;
 	}
 	
 }
