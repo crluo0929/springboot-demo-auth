@@ -28,9 +28,8 @@ public class DBUser {
 	private String tel ;  //telnum
 	private String pass; //密碼
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "userid",referencedColumnName = "id",
-	foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT) )
-	private Set<Role> roles ;
+	@JoinColumn(name = "userid",referencedColumnName = "id",insertable = true, updatable = true)
+	private List<Role> roles ;
 	
 	public int getId() {
 		return id;
@@ -62,10 +61,10 @@ public class DBUser {
 	public void setPass(String pass) {
 		this.pass = pass;
 	}
-	public Set<Role> getRoles() {
+	public List<Role> getRoles() {
 		return roles;
 	}
-	public void setRoles(Set<Role> roles) {
+	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
 	
