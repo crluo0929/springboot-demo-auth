@@ -6,9 +6,11 @@ import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.entity.Book;
 import com.example.repo.BookRepository;
+import static com.example.util.IterableUtil.* ;
 
 @Service
 public class BookService {
@@ -16,9 +18,10 @@ public class BookService {
 	@Autowired BookRepository bookDao ;
 	
 	public List<Book> listBooks(){
-		return iterableToList(bookDao.findAll()) ;
+		return toList(bookDao.findAll()) ;
 	}
 	
+	@Transactional
 	public Book addBook(Book book) {
 		Book b = bookDao.save(book);
 		return b ;
@@ -29,24 +32,19 @@ public class BookService {
 	}
 	
 	public List<Book> getBookByAuthor(String author) {
-		return iterableToList(bookDao.findByAuthor(author)) ;
+		return toList(bookDao.findByAuthor(author)) ;
 	}
 	
 	public List<Book> getBookByLanguage(String language){
-		return iterableToList(bookDao.findByLang(language));
+		return toList(bookDao.findByLang(language));
 	}
 	
 	public List<Book> getBookTitleLike(String title){
-		return iterableToList(bookDao.findByTitleLike("%"+title+"%")) ;
+		return toList(bookDao.findByTitleLike("%"+title+"%")) ;
 	}
 	
 	public List<Book> getBookByAuthorAndTitle(String author, String title) {
-		return iterableToList(bookDao.queryAuthorAndTitle(author, title)) ;
+		return toList(bookDao.queryAuthorAndTitle(author, title)) ;
 	}
 	
-	private List<Book> iterableToList(Iterable<Book> itr){
-		return StreamSupport
-				.stream(itr.spliterator(), false)
-				.collect(Collectors.toList()) ;
-	}
 }
