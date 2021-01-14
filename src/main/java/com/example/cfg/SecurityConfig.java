@@ -11,7 +11,9 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.example.filter.JwtFilter;
 import com.example.service.H2UserDetailsService;
 import com.example.service.ThirdPartyAuthenticationProvider;
 
@@ -21,6 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired H2UserDetailsService userDetailsService;
 	@Autowired ThirdPartyAuthenticationProvider authProvider;
+	@Autowired JwtFilter jwtFilter ;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -35,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		  .antMatchers("/api/auth/**").permitAll()
 		  .anyRequest().authenticated()
 		  .and()
+		  .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 		  //改為JWT認證，不需要表單登入認證
 //		  .formLogin().permitAll().and()
 //		  .logout()

@@ -3,6 +3,8 @@ package com.example.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +43,12 @@ public class UserController {
 			return new ResultMessage(500,0,"刪除失敗:"+ex.getMessage()) ;
 		}
 		return new ResultMessage(200,0,"刪除成功") ;
+	}
+	
+	@GetMapping("/api/user/current")
+	public String currentUser() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication() ;
+		return (String) auth.getPrincipal() ;
 	}
 	
 }

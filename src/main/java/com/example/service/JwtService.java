@@ -1,6 +1,7 @@
 package com.example.service;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -41,17 +43,16 @@ public class JwtService {
 		return isTokenExpired(token) ;
 	}
 	
+	public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+		final Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody(); 
+		return claimsResolver.apply(claims);
+	}
+	
 	private Boolean isTokenExpired(String token) {
 		final Date expiration = getClaimFromToken(token, Claims::getExpiration);
 		return expiration.after(new Date());
 	}
 
-	private <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-		final Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody(); 
-		return claimsResolver.apply(claims);
-	}
-	
-	
 	private String doGenerateToken(Claims claims, String subject) {
 		Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, JWT_TOKEN_VALIDITY);

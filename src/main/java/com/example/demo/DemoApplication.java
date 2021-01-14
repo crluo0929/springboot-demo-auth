@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan(basePackages = {"com.example.cfg","com.example.service","com.example.api"})
+@ComponentScan(basePackages = {"com.example.cfg","com.example.service","com.example.api","com.example.filter"})
 public class DemoApplication {
 	
 	public static void main(String[] args) {
