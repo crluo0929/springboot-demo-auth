@@ -27,29 +27,28 @@ import springfox.documentation.spring.web.plugins.Docket;
 @EnableOpenApi
 public class SwaggerConfig {
 
-	@Value("${swagger.header.name:Authroization}") String headerName ;
+	@Value("${swagger.header.name:x-api-key}") String headerName ;
 	
 	@Bean
 	public Docket apiDocket() {
 		
 		RequestParameter parameter = new RequestParameterBuilder()
 		          .name(headerName) //要送出去的Key
-		          .description(headerName)
+		          .description("extrakey")
 		          .in(ParameterType.HEADER) //放在header中送出
 		          .build() ;
 
-		
 		return new Docket(DocumentationType.OAS_30)
 		  .groupName("後台API")
 		  .apiInfo(apiInfo())
 		  .select()
 		  .apis(RequestHandlerSelectors.basePackage("com.example.api"))
 		  .build()
+		  .globalRequestParameters(Collections.singletonList(parameter))
 		  .securitySchemes(securitySchemes())
           .securityContexts(securityContexts());
-//          .globalRequestParameters(Collections.singletonList(parameter)); 
+          
 	}
-	
 	
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()

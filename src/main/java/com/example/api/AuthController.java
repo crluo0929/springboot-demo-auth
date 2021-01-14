@@ -12,12 +12,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.service.JwtService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
+@Api(tags = "認證相關API")
 public class AuthController {
 
 	@Autowired AuthenticationManager authManager ;
 	@Autowired JwtService jwtService ;
 	
+	@ApiOperation(value = "API登入認證", notes="登入取得Token")
+	@ApiImplicitParams(value = @ApiImplicitParam(
+			name = "帳號密碼",
+			required = true,
+			value="輸入帳密",
+			paramType = "body",
+			dataTypeClass = NamePass.class
+	))
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "登入成功，取得Token"),
+			@ApiResponse(code = 500, message = "登入失敗，帳密有誤")
+	})
 	@PostMapping("/api/auth")
 	public JwtToken auth(@RequestBody NamePass userInfo) {
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userInfo.username, userInfo.password) ;
