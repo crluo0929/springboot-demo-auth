@@ -1,7 +1,6 @@
 package com.example.api;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +16,8 @@ import com.example.service.BookService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -38,7 +39,7 @@ public class BookController {
 	
 	@ApiOperation(value = "以ISBN號碼查詢書本", notes="以ISBN號碼查詢書本")
 	@ApiImplicitParams(value = @ApiImplicitParam(
-			name = "ISBN號碼",
+			name = "isbn",
 			required = true,
 			value="輸入ISBN號碼",
 			paramType = "path",
@@ -71,7 +72,7 @@ public class BookController {
 	
 	@ApiOperation(value = "以作者查詢書本", notes="以作者查詢書本")
 	@ApiImplicitParams(value = @ApiImplicitParam(
-			name = "作者",
+			name = "author",
 			required = true,
 			value="輸入作者",
 			paramType = "path",
@@ -88,7 +89,7 @@ public class BookController {
 	
 	@ApiOperation(value = "以語言查詢書本", notes="以語言查詢書本")
 	@ApiImplicitParams(value = @ApiImplicitParam(
-			name = "語言",
+			name = "language",
 			required = true,
 			value="輸入語言",
 			paramType = "path",
@@ -105,7 +106,7 @@ public class BookController {
 	
 	@ApiOperation(value = "以書名關鍵字查詢書本", notes="以書名關鍵字查詢書本")
 	@ApiImplicitParams(value = @ApiImplicitParam(
-			name = "書名關鍵字",
+			name = "title",
 			required = true,
 			value="輸入書名關鍵字",
 			paramType = "path",
@@ -129,11 +130,17 @@ public class BookController {
 			dataTypeClass = String.class
 	))
 	@PostMapping("/api/book/")
-	public List<Book> getBookByAuthorAndTitle(@RequestBody Map<String,String> condition) {
-		String author = condition.get("author") ;
-		String title = condition.get("title") ;
+	public List<Book> getBookByAuthorAndTitle(@RequestBody AuthorTitle condition) {
+		String author = condition.author ;
+		String title = condition.title ;
 		return bookService.getBookByAuthorAndTitle(author, title) ;
 	}
 	
-	
+}
+@ApiModel(value = "作者與書名")
+class AuthorTitle{
+	@ApiModelProperty(value = "作者")
+	public String author ;
+	@ApiModelProperty(value = "書名")
+	public String title ;
 }

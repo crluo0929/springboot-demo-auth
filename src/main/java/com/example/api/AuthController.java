@@ -15,6 +15,8 @@ import com.example.service.JwtService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -28,7 +30,7 @@ public class AuthController {
 	
 	@ApiOperation(value = "API登入認證", notes="登入取得Token")
 	@ApiImplicitParams(value = @ApiImplicitParam(
-			name = "帳號密碼",
+			name = "帳密",
 			required = true,
 			value="輸入帳密",
 			paramType = "body",
@@ -60,8 +62,11 @@ public class AuthController {
 	}
 	
 }
+@ApiModel(value = "帳密")
 class NamePass{
+	@ApiModelProperty(value = "帳號", example = "admin")
 	public String username ;
+	@ApiModelProperty(value = "密碼", example = "admin!")
 	public String password ;
 }
 class JwtToken{
