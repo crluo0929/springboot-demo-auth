@@ -35,9 +35,11 @@ public class JwtFilter extends GenericFilterBean{
 			throws IOException, ServletException {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		//1.取出token
-		String token = httpServletRequest.getHeader(XAUTH_TOKEN_HEADER_NAME);
-		if (StringUtils.hasText(token)) {
+		String header = httpServletRequest.getHeader(XAUTH_TOKEN_HEADER_NAME);
+		if (StringUtils.hasText(header) && header.startsWith("Bearer ")) {
 			try {
+				String token = header.substring(7);
+				//JWT Authroization的認證格式為 "Bearer token"
 				//2.驗證token
 				boolean isValid = jwtService.validateToken(token) ;
 				if(isValid) {
@@ -53,8 +55,7 @@ public class JwtFilter extends GenericFilterBean{
 					SecurityContextHolder.getContext().setAuthentication(authentication);
 				}
 			}catch(Exception e) {
-				e.printStackTrace();
-				System.out.println("Exception"+e.getMessage()) ;
+
 			}
 		}
 		chain.doFilter(request, response);
