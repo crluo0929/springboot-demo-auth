@@ -54,7 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/h2-console/**").and().debug(true) ;
+		web.ignoring()
+		.antMatchers("/h2-console/**","/swagger-ui/**","/swagger-resources/**","/v3/**")
+		.and().debug(true) ;
 	}
 	
 	@Bean

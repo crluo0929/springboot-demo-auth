@@ -19,7 +19,7 @@ public class AuthController {
 	@Autowired JwtService jwtService ;
 	
 	@PostMapping("/api/auth")
-	public String auth(@RequestBody NamePass userInfo) {
+	public JwtToken auth(@RequestBody NamePass userInfo) {
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userInfo.username, userInfo.password) ;
 		try {
 			//1.進行認證
@@ -27,7 +27,8 @@ public class AuthController {
 			//2.認證成功存入SecurityContext
 			SecurityContextHolder.getContext().setAuthentication(authToken);
 			//3.產生JWT回傳
-			return jwtService.generateToken(authToken) ;
+			String strToken = jwtService.generateToken(authToken) ;
+			return new JwtToken(strToken) ;
 		}catch(Exception e) {
 			throw new UsernameNotFoundException("認證失敗") ;
 		}
@@ -42,4 +43,8 @@ public class AuthController {
 class NamePass{
 	public String username ;
 	public String password ;
+}
+class JwtToken{
+	public String token ;
+	public JwtToken(String t) { this.token = t ;}
 }

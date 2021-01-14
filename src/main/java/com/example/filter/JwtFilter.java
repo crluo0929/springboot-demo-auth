@@ -39,7 +39,7 @@ public class JwtFilter extends GenericFilterBean{
 		if (StringUtils.hasText(header) && header.startsWith("Bearer ")) {
 			try {
 				String token = header.substring(7);
-				//JWT Authroization的認證格式為 "Bearer token"
+				//JWT Authorization的認證格式為 "Bearer token"
 				//2.驗證token
 				boolean isValid = jwtService.validateToken(token) ;
 				if(isValid) {
