@@ -1,0 +1,35 @@
+<configuration scan="true" scanPeriod="60 seconds" debug="false"> 
+	
+	<property name="PROJECT_NAME" value="example"/>
+    <property name="LOG_HOME" value="logs/${PROJECT_NAME}/logs" />
+	<property name="CHARSET" value="UTF-8" />
+    <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS,Asia/Taipei} [${HOSTNAME}] [%thread] %-5level %-40.40logger{40} %method:%line - %msg%n" />
+    <property name="CONSOLE_PATTERN" value="%d{HH:mm:ss.SSS,Asia/Taipei} %-5level %-40.40logger{40} - %msg%n"/>
+	
+　　<contextName>${PROJECT_NAME}</contextName>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${CONSOLE_PATTERN}</pattern>
+            <charset>${CHARSET}</charset>
+        </encoder>
+    </appender>
+    
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日誌文件輸出的文件名-->
+            <FileNamePattern>${LOG_HOME}/${PROJECT_NAME}-warn-%d{yyyy-MM-dd,Asia/Taipei}-${HOSTNAME}.log</FileNamePattern>
+            <!--日誌文件最多保留天數，超過從最舊開始砍，Priproty＝1-->
+            <maxHistory>30</maxHistory>
+            <!--所有日誌文件總合大小，超過從最舊開始砍，Priproty＝2-->
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${PATTERN}</pattern>
+            <charset>${CHARSET}</charset>
+        </encoder>
+	</appender>
+	<root level="DEBUG"> 
+		<appender-ref ref="STDOUT" /> 
+		<appender-ref ref="FILE" />
+	</root> 
+</configuration>

@@ -18,8 +18,10 @@ import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class JwtService {
 
 	@Value("${jwt.token.secret:abcdefg}") String secret  ;
@@ -36,6 +38,11 @@ public class JwtService {
 	}
 	
 	public boolean validateToken(String token) {
+		log.debug("JwtService debug message");
+		log.info("JwtService info message");
+		log.warn("JwtService warn message");
+		log.error("JwtService error message");
+		
 		String username = (String) getClaimFromToken(token, Claims::getSubject ) ;
 		String roles = (String) getClaimFromToken(token, (claims)-> claims.get("userrole") ) ;
 		//TODO: 依username查詢DB，比對roles是否有被竄改，效能問題可考慮查cache

@@ -1,5 +1,10 @@
 package com.example.api;
 
+import javax.annotation.PreDestroy;
+
+import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,10 +25,14 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Api(tags = "認證相關API")
+@Slf4j
 public class AuthController {
+
+//	private static final Logger log = LoggerFactory.getLogger(AuthController.class) ;
 
 	@Autowired AuthenticationManager authManager ;
 	@Autowired JwtService jwtService ;
@@ -58,6 +67,10 @@ public class AuthController {
 	
 	@PostMapping("/api/auth/validate")
 	public boolean validateToken(@RequestBody String token) {
+		log.debug("AuthController debug message");
+		log.info("AuthController info message");
+		log.warn("AuthController warn message");
+		log.error("AuthController error message");
 		return jwtService.validateToken(token) ;
 	}
 	
