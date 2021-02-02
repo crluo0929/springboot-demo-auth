@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //		  .formLogin().permitAll().and()
 //		  .logout()
 //		  .and()
-		  .httpBasic() ;
+		  .httpBasic().disable() ; //改透過JWT，不再需要Basic Authroization
 	}
 	
 	@Override

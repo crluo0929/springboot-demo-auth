@@ -24,7 +24,7 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
-@EnableOpenApi
+//@EnableOpenApi 引入即有AutoConfigure功能
 public class SwaggerConfig {
 
 	@Value("${swagger.header.name:x-api-key}") String headerName ;
@@ -45,8 +45,8 @@ public class SwaggerConfig {
 		  .apis(RequestHandlerSelectors.basePackage("com.example.api"))
 		  .build()
 		  .globalRequestParameters(Collections.singletonList(parameter))
-		  .securitySchemes(securitySchemes())
-          .securityContexts(securityContexts());
+		  .securitySchemes(securitySchemes())  //設定用哪些認證方式，如在Header上加Authorization
+          .securityContexts(securityContexts()); //設定這些認證方式對應的操作對象，如某些API
           
 	}
 	
@@ -65,13 +65,14 @@ public class SwaggerConfig {
     }
     
     private List<SecurityContext> securityContexts() {
-    //設定認證範圍為global
     AuthorizationScope[] scope = {new AuthorizationScope("global", "desc")} ;
         return Collections.singletonList(
                 SecurityContext.builder()
                         .securityReferences(Collections.singletonList(
                         //設定對應ApiKey的Key
                         new SecurityReference("Authorization", scope)))
+                        //對/api/下的所有API套用
+                        .operationSelector(s->s.requestMappingPattern().matches("/api/.*"))
                         .build()
         );
     }
