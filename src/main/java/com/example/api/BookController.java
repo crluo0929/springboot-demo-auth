@@ -118,6 +118,8 @@ public class BookController {
 	})
 	@GetMapping("/api/book/title/{title}")
 	public List<Book> getBookTitleLike(@PathVariable String title){
+		//用來測試打API失敗的情境
+		if(title!=null && title.indexOf("64")>=0) throw new RuntimeException("出現了不合法的可怕關鍵字");
 		return bookService.getBookTitleLike(title);
 	}
 	

@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		  .antMatchers("/api/book/**").authenticated()
 		  .antMatchers("/api/user/**").hasRole("ADMIN")
 		  .antMatchers("/api/auth/**").permitAll()
+		  .antMatchers("/actuator/**").permitAll()
 		  .anyRequest().authenticated()
 		  .and()
 		  .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
@@ -55,8 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring()
-		.antMatchers("/h2-console/**","/swagger-ui/**","/swagger-resources/**","/v3/**")
-		.and().debug(true) ;
+		.antMatchers("/h2-console/**","/swagger-ui/**","/swagger-resources/**","/v3/**");
+//		.and().debug(true) ;
 	}
 	
 	@Bean
