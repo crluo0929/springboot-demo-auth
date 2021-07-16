@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.service.JwtService;
+import com.example.vo.JwtToken;
+import com.example.vo.NamePass;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -74,15 +76,4 @@ public class AuthController {
 		return jwtService.validateToken(token) ;
 	}
 	
-}
-@ApiModel(value = "帳密")
-class NamePass{
-	@ApiModelProperty(value = "帳號", example = "admin")
-	public String username ;
-	@ApiModelProperty(value = "密碼", example = "admin!")
-	public String password ;
-}
-class JwtToken{
-	public String token ;
-	public JwtToken(String t) { this.token = t ;}
 }
