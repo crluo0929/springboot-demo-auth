@@ -30,8 +30,8 @@ public class RandomMetricsGenScheduler {
 	@Scheduled(fixedDelay = 10000) //每n秒做一次
 	public void randomGenMetrics() {
 		log.debug("randomGenMetrics do");
-		counter.increment();
-		whatever.set(new Random().nextInt(1000000));
+		counter.increment(new Random().nextInt(10)); //每次隨機增加0~10
+		whatever.set(new Random().nextInt(1000000)); //每次隨機變更0~1000000
 	}
 	
 }
