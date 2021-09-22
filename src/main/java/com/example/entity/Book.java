@@ -10,25 +10,25 @@ import javax.persistence.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-@ApiModel(value="書")
+
+@Schema(title="Book", description="書")
 @Entity
 public class Book {
 
-	@ApiModelProperty(value = "id")
+	@Schema(description = "id")
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)	
 	private int id ;
-	@ApiModelProperty(value = "標題")
+	@Schema(description = "標題")
 	private String title ;
-	@ApiModelProperty(value = "ISBN編號")
+	@Schema(description = "ISBN編號")
 	private String isbn ;
-	@ApiModelProperty(value = "作者")
+	@Schema(description = "作者")
 	private String author ;
-	@ApiModelProperty(value = "語言")
+	@Schema(description = "語言")
 	private String lang ;
-	@ApiModelProperty(value = "發行日")
+	@Schema(description = "發行日")
 	@DateTimeFormat(pattern="yyyy-MM-dd",iso = ISO.DATE)
 //	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "Asia/Shanghai")	
 	private Date publish ;

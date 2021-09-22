@@ -19,18 +19,19 @@ import com.example.service.JwtService;
 import com.example.vo.JwtToken;
 import com.example.vo.NamePass;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterStyle;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@Api(tags = "認證相關API")
+@Tag(name = "認證相關API")
 @Slf4j
 public class AuthController {
 
@@ -39,18 +40,16 @@ public class AuthController {
 	@Autowired AuthenticationManager authManager ;
 	@Autowired JwtService jwtService ;
 	
-	@ApiOperation(value = "API登入認證", notes="登入取得Token")
-	@ApiImplicitParams(value = @ApiImplicitParam(
-			name = "帳密",
-			required = true,
-			value="輸入帳密",
-			paramType = "body",
-			dataTypeClass = NamePass.class
-	))
+	@Operation(summary = "API登入認證", description="登入取得Token")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "登入成功，取得Token"),
-			@ApiResponse(code = 500, message = "登入失敗，帳密有誤")
+			@ApiResponse(responseCode = "200", description = "登入成功，取得Token"),
+			@ApiResponse(responseCode = "500", description = "登入失敗，帳密有誤")
 	})
+	@io.swagger.v3.oas.annotations.parameters.RequestBody(
+			required = true,
+			description = "輸入帳密",
+			content = @Content(schema = @Schema(allOf = NamePass.class) ) 
+	)
 	@PostMapping("/api/auth")
 	public JwtToken auth(@RequestBody NamePass userInfo) {
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userInfo.username, userInfo.password) ;

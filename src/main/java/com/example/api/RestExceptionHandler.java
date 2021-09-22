@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @RestControllerAdvice(basePackages={"com.example.api"})
 public class RestExceptionHandler {
 
@@ -19,9 +21,14 @@ public class RestExceptionHandler {
 	}
 	
 }
+
+@Schema(title="ResultMessage", description="結果資訊")
 class ResultMessage {
+	@Schema(description="http回傳狀態碼")
 	private int httpStatus;
+	@Schema(description="錯誤碼")
 	private int errorcode ;
+	@Schema(description="訊息")
 	private String message ;
 	
 	public ResultMessage(int status,int errorcode,String message) {

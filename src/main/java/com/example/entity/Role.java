@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Entity
 public class Role {
 

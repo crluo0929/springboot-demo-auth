@@ -17,6 +17,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+//@Hidden don't expose important entities to rest clients in production mode
 @Entity
 @Table(name = "user") //對應DB的實際表格名稱
 public class DBUser {
